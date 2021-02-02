@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="com.flipkart.AppTest" time="0.002" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="com.flipkart.AppTest" time="0.003" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="15.0.1+9"/>
@@ -30,7 +30,7 @@
     <property name="java.class.version" value="59.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="5.8.0-38-generic"/>
+    <property name="os.version" value="5.8.0-41-generic"/>
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="user.home" value="/home/vikramc"/>
     <property name="user.timezone" value="Asia/Kolkata"/>
@@ -56,5 +56,5 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="java.vendor.version" value="AdoptOpenJDK"/>
   </properties>
-  <testcase classname="com.flipkart.AppTest" name="testApp" time="0.002"/>
+  <testcase classname="com.flipkart.AppTest" name="testApp" time="0.003"/>
 </testsuite>
