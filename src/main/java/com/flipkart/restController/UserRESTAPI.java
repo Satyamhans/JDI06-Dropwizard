@@ -32,16 +32,6 @@ public class UserRESTAPI {
 	
 	// logger
 	private static Logger logger = Logger.getLogger(UserRESTAPI.class);
-
-	
-	// Say hello!
-    @GET
-    @Path("/hello")
-    @Produces(MediaType.TEXT_PLAIN)
-	public String hello() {
-		return "Hello World! This is for you.";
-	}
-    
     
     
     /**
