@@ -39,6 +39,14 @@ public class StudentRESTAPI
 	StudentInterface studentOperation = StudentOperation.getInstance();
 	private static Logger logger = Logger.getLogger(StudentOperation.class);
 	
+	
+	
+	/**
+	 * To add course to the list of registered courses
+	 * @param student
+	 * @param courseId
+	 * @return response
+	 */
 	@POST
 	@Path("/addCourse/{courseId}")
 	@Consumes("application/json")
@@ -65,6 +73,15 @@ public class StudentRESTAPI
 		return Response.status(200).entity(student).build();
 	}
 	
+	
+	
+	
+	/**
+	 * To drop a course from the list of registered courses.
+	 * @param student
+	 * @param courseId
+	 * @return response
+	 */
 	@POST
 	@Path("/dropCourse/{courseId}")								//Student , Course 
 	@Consumes("application/json")
@@ -87,6 +104,13 @@ public class StudentRESTAPI
 		return Response.status(200).entity(student).build();
 	}
 	
+	
+	
+	/**
+	 * To view grades of a student.
+	 * @param student
+	 * @return response
+	 */
 	@POST
 	@Path("/viewGrades")
 	@Consumes("application/json")
@@ -100,11 +124,18 @@ public class StudentRESTAPI
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(500).entity(e.getMsg()).build();
 		}
-		
+		// think about returning Map<String, Grade> 
 		return Response.status(200).entity(reportCard).build();
 	}
 	
+	
+	
+	/**
+	 * To view the course catalogue
+	 * @return List of courses in the catalogue
+	 */
 	@GET
 	@Path("/viewCourseCatalogue")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -115,6 +146,13 @@ public class StudentRESTAPI
 		return courseCatalogue;
 	}
 	
+	
+	
+	/**
+	 * To view the registered courses
+	 * @param student
+	 * @return List of courses
+	 */
 	@POST
 	@Path("/viewRegisteredCourses")
 	@Consumes("application/json")
@@ -122,20 +160,40 @@ public class StudentRESTAPI
 	public List<Course> viewRegisteredCourses(Student student) 
 	{
 		// fetch from database instead ..?
-		List<Course> courseList = student.getCourseList();
+		List<Course> courseList = null;
+		try{
+			courseList = studentOperation.getCourseList(student);
+		}
+		catch(UserCRSException e) {
+			logger.info(e.getMsg());
+		}
 		
 		return courseList;
 	}
 	
+	
+	
+	/**
+	 * To get the total semester fee.
+	 * @param student
+	 * @return amount
+	 */
 	@POST
 	@Path("/viewSemesterFees")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
 	public double viewSemesterFees(Student student)
 	{
-		return student.getTotalFees();
+		return PaymentService.getTotalFees(student);
 	}
 	
+	
+	
+	/**
+	 * To make fee payment.
+	 * @param student
+	 * @return response
+	 */
 	@POST				// might be POST/PUT ??
 	@Path("/makeFeePayment")
 	@Consumes("application/json")
@@ -152,6 +210,13 @@ public class StudentRESTAPI
 		return response;
 	}
 	
+	
+	
+	/**
+	 * To register the courses.
+	 * @param student
+	 * @return List of courses.
+	 */
 	@POST
 	@Path("/registerCourses")
 	@Consumes("application/json")
@@ -162,7 +227,6 @@ public class StudentRESTAPI
 		
 		try{
 			courseList = studentOperation.registerCourses(student, student.getCourseList());
-			PaymentService.calculateAmount(student);
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());

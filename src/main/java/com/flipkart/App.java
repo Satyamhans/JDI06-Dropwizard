@@ -17,6 +17,7 @@ import com.flipkart.restController.*;
  * Hello world!
  *
  */
+// comments
 public class App extends Application<Configuration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
  

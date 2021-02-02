@@ -3,6 +3,7 @@ package com.flipkart.restController;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -32,6 +33,11 @@ public class ProfessorRESTAPI {
 	ProfessorInterface professorOperation = ProfessorOperation.getInstance(); 
 	private static Logger logger = Logger.getLogger(StudentOperation.class);
 
+	/**
+	 * To view the courses professor is teaching.
+	 * @param professor
+	 * @return courseList
+	 */
 	@POST
 	@Path("/viewCourses")
 	@Consumes("application/json")
@@ -43,6 +49,12 @@ public class ProfessorRESTAPI {
 		return courseList;
 	}
 	
+	/**
+	 * To view students enrolled in a particular course professor is teaching.
+	 * @param professor
+	 * @param courseId
+	 * @return List of students
+	 */
 	@POST
 	@Path("/viewEnrolledStudents/{courseId}")
 	@Consumes("application/json")
@@ -52,7 +64,7 @@ public class ProfessorRESTAPI {
 		Course course = new Course();
 		course.setCourseId(courseId);
 		
-		List<Student> studentList = null;
+		List<Student> studentList = new ArrayList<Student>();
 		try {
 			studentList = professorOperation.viewEnrolledStudents(professor, course);
 		}
@@ -63,6 +75,14 @@ public class ProfessorRESTAPI {
 		return studentList;
 	}
 	
+	/**
+	 * To grade a student on a particular course.
+	 * @param professor
+	 * @param studentId
+	 * @param courseId
+	 * @param grade_to_assign
+	 * @return response
+	 */
 	@POST
 	@Path("/gradeStudents/{studentId}/{courseId}/{grade}")
 	@Consumes("application/json")
@@ -98,6 +118,10 @@ public class ProfessorRESTAPI {
 		return response;
 	}
 	
+	/**
+	 * To view the course catalogue.
+	 * @return list of courses in catalouge
+	 */
 	@GET
 	@Path("/viewCourseCatalogue")
 	@Produces(MediaType.APPLICATION_JSON)

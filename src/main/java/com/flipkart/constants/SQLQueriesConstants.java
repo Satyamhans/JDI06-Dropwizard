@@ -29,6 +29,7 @@ public class SQLQueriesConstants {
 
     //PaymentServices
     public static final String SET_STUDENT_FEE = "update studenttable set totalFees = ? where studentId = ?";
+    public static final String GET_STUDENT_TOTAL_FEES = "select totalFees from studenttable where studentId = ?";
 
     //Student
     public static final String ADD_COURSE_STUDENT_QUERY = "insert into studentgradetable(studentId, courseId, grade) values(?,?,?)";
@@ -39,7 +40,11 @@ public class SQLQueriesConstants {
     public static final String MAKE_FEE_PAYMENT = "update studenttable set hasPaidFee = 't' where studentId = ?";
     public static final String UPDATE_PAYMENT_TABLE = "insert into paymenttable(studentId, amount, paymentMode) values (?,?,?)";
     public static final String SET_STUDENT_IS_REGISTERED_FLAG = "update studenttable set isRegistered = 't' where studentId = ?";
-
+    public static final String GET_STUDENT_IS_REGISTERED_FLAG = "select isRegistered from studenttable where studentId = ?";
+    public static final String GET_STUDENT_IS_REPORT_GENERATED_FLAG = "select isReportGenerated from studenttable where studentId = ?";
+    public static final String GET_STUDENT_HAS_PAID_FEE_FLAG = "select hasPaidFee from studenttable where studentId = ?";
+    
+    
     //authUser
     public static final String GET_USER_QUERY = "Select * from usertable where email=?";
 
@@ -73,5 +78,7 @@ public class SQLQueriesConstants {
     public static final String VIEW_ENROLLED_STUDENTS = "select s.*, u.username  from studenttable s, usertable u where s.studentId In (select studentId from studentgradetable where courseId = ?) and u.userId = s.studentId";
     public static final String GRADE_STUDENTS = "Update studentgradetable set grade = ? where studentId = ? and courseId = ?";
     public static final String VIEW_PROFESSOR_COURSES = "select * from coursetable where professorId = ?";
+    
+   
 
 }

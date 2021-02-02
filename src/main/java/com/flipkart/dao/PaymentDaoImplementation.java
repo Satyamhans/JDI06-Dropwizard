@@ -25,7 +25,8 @@ public class PaymentDaoImplementation {
 		}
 		return instance;
 	}
-
+	
+	private static Logger logger = Logger.getLogger(PaymentDaoImplementation.class);
 	private static Connection connection = DBUtils.getConnection();
 
 	/**
@@ -37,7 +38,7 @@ public class PaymentDaoImplementation {
     public static double calculateAmount(Student student,double amount)
     {
         //Logger
-        Logger logger = Logger.getLogger(PaymentDaoImplementation.class);
+        
         PreparedStatement statement = null;
         
         logger.debug("DAO: Calculating Amount");
@@ -74,6 +75,26 @@ public class PaymentDaoImplementation {
         		logger.error(e.getMessage());
         	}
         }
+        return amount;
+    }
+    
+    public static double getTotalFees(Student student) {
+    	double amount = 0.0;
+    	PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(SQLQueriesConstants.GET_STUDENT_TOTAL_FEES);
+            stmt.setInt(1, student.getUserId());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            amount = rs.getDouble(1);
+            logger.info(amount);
+            stmt.close();
+        }
+        catch(SQLException e){
+            logger.error(e.getMessage());
+            return amount;
+        }
+//        logger.info(amount);
         return amount;
     }
 }

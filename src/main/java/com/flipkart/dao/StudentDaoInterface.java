@@ -47,5 +47,12 @@ public interface StudentDaoInterface {
 	 * @return boolean confirmation for course dropping
 	 */
     public boolean dropCourses(Course course, Student student);
+    
+    /**
+	 * To fetch courseList of the student
+	 * @param student student whose courseList has to be fetched
+	 * @return return courseList
+	 */
+    public List<Course> getCourseList(Student student);
 
 }

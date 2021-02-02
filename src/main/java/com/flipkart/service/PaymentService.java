@@ -87,5 +87,10 @@ public class PaymentService {
         return true;
     }
 
+    public static double getTotalFees(Student student)
+    {
+    	
+        return PaymentDaoImplementation.getTotalFees(student);
+    }
 
 }

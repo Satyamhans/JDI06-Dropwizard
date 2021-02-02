@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import com.flipkart.bean.Course;
 import com.flipkart.constants.*;
 import com.flipkart.bean.Student;
-import com.flipkart.constants.Grades;
+import com.flipkart.service.PaymentService;
 import com.flipkart.service.StudentOperation;
 import com.flipkart.util.DBUtils;
 import org.apache.log4j.Logger;
@@ -152,7 +152,7 @@ public class StudentDaoImplementation implements StudentDaoInterface{
      */
     @Override
     public boolean makeFeePayment(Student student) {
-        logger.debug("DAO: Student is paying fees");
+        logger.debug("DAO: Student is paying fees: " + PaymentService.getTotalFees(student));
         String paymentMode = "UPI";
 
         int flag1=0, flag2=0;
@@ -232,4 +232,27 @@ public class StudentDaoImplementation implements StudentDaoInterface{
         }
         return false;
     }
+    @Override
+    public List<Course> getCourseList(Student student){
+    	List<Course> courseList = new ArrayList<Course>();
+    	
+    	PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(SQLQueriesConstants.GET_REGISTERED_COURSES_QUERY);
+            stmt.setInt(1, student.getUserId());
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+            	Course course = new Course();
+            	course.setCourseId(rs.getString(1));
+            	courseList.add(course);
+            }
+            stmt.close();
+ 
+        }
+        catch(SQLException e){
+            logger.error(e.getMessage());
+        }
+        return courseList;
+    }
+    
 }
