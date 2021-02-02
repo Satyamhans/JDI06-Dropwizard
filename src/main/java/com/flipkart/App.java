@@ -13,11 +13,16 @@ import org.slf4j.LoggerFactory;
 import com.flipkart.restController.*;
 
 
+
 /**
- * Hello world!
+ * @author vikram.c
+ * @author nitin.pothineni
+ * @author satyam.hans
+ * @author pooja.tulsyan
+ * @author vennela.reddy
+ * @author rishab.sahu
  *
  */
-// comments
 public class App extends Application<Configuration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
  
