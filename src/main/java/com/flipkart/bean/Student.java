@@ -14,10 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "student")
 public class Student extends User {
-	
-    private String branch;
-    
-    @Pattern(message = "Enter valid Gender, Valid genders are M & F!",regexp = "^[MF]$")
+
+
+	@Pattern(message = "Enter valid Gender, Valid genders are M & F!",regexp = "^[MF]$")
     private String gender;
     
     private boolean isApproved;
@@ -32,12 +31,29 @@ public class Student extends User {
     
     @Size(min=1, max=50, message = "Address has to be atleast 1 character long and atmost 50 characters long")
     private String address;
-
+    
+    
     public Student()
     {
     
     }
     
+    /**
+     * @param username
+     * @param userId
+     * @param emailId
+     * @param password
+     * @param userType
+     * @param branch
+     * @param gender
+     * @param isApproved
+     * @param hasScholarship
+     * @param isReportGenerated
+     * @param totalFees
+     * @param hasPaidFee
+     * @param courseList
+     * @param address
+     */
     public Student(String username, int userId, String emailId, String password, UserType userType, String branch, String gender, boolean isApproved, boolean hasScholarship, boolean isReportGenerated, double totalFees, boolean hasPaidFee, List<Course> courseList, String address) {
         super(username, userId, emailId, password, userType);
         this.branch = branch;
@@ -51,95 +67,13 @@ public class Student extends User {
         this.address = address;
     }
 
-    public boolean isReportGenerated() {
-        return isReportGenerated;
-    }
-
-    public void setReportGenerated(boolean reportGenerated) {
-        isReportGenerated = reportGenerated;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public boolean isApproved() {
-        return isApproved;
-    }
-    
-    public boolean isRegistered() {
-        return isRegistered;
-    }
-
-    public void setIsRegistered(boolean flag)
-    {
-    	isRegistered = flag;
-    }
-    
-    public void setApproved(boolean approved) {
-        isApproved = approved;
-    }
-
-    public boolean isHasScholarship() {
-        return hasScholarship;
-    }
-
-    public void setHasScholarship(boolean hasScholarship) {
-        this.hasScholarship = hasScholarship;
-    }
-
-    public double getTotalFees() {
-        return totalFees;
-    }
-
-    public void setTotalFees(double totalFees) {
-        this.totalFees = totalFees;
-    }
-
-    public boolean isHasPaidFee() {
-        return hasPaidFee;
-    }
-
-    public void setHasPaidFee(boolean hasPaidFee) {
-        this.hasPaidFee = hasPaidFee;
-    }
-
-    public List<Course> getCourseList() {
-        return courseList;
-    }
-
-    public void setCourseList(List<Course> courseList) {
-        this.courseList = courseList;
-    }
-    
-    public String toString() {
-    	return userId+"\t"+username+"\t"+userType;
-    }
-
-    public void setRegistered(boolean registered) {
-        isRegistered = registered;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+    /**
+     * @param user
+     * @param branch
+     * @param gender
+     * @param hasScholarship
+     * @param address
+     */
     public Student(User user, String branch, String gender, boolean hasScholarship, String address) {
         super(user.username, user.userId, user.emailId, user.password, user.userType);
         this.branch = branch;
@@ -147,5 +81,149 @@ public class Student extends User {
         this.hasScholarship = hasScholarship;
         this.address = address;
     }
+    
+private String branch;
+    
+    /**
+	 * @return the branch
+	 */
+	public String getBranch() {
+		return branch;
+	}
 
+	/**
+	 * @param branch the branch to set
+	 */
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public String getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * @return the isApproved
+	 */
+	public boolean isApproved() {
+		return isApproved;
+	}
+
+	/**
+	 * @param isApproved the isApproved to set
+	 */
+	public void setApproved(boolean isApproved) {
+		this.isApproved = isApproved;
+	}
+
+	/**
+	 * @return the isRegistered
+	 */
+	public boolean isRegistered() {
+		return isRegistered;
+	}
+
+	/**
+	 * @param isRegistered the isRegistered to set
+	 */
+	public void setIsRegistered(boolean isRegistered) {
+		this.isRegistered = isRegistered;
+	}
+
+	/**
+	 * @return the hasScholarship
+	 */
+	public boolean isHasScholarship() {
+		return hasScholarship;
+	}
+
+	/**
+	 * @param hasScholarship the hasScholarship to set
+	 */
+	public void setHasScholarship(boolean hasScholarship) {
+		this.hasScholarship = hasScholarship;
+	}
+
+	/**
+	 * @return the isReportGenerated
+	 */
+	public boolean isReportGenerated() {
+		return isReportGenerated;
+	}
+
+	/**
+	 * @param isReportGenerated the isReportGenerated to set
+	 */
+	public void setReportGenerated(boolean isReportGenerated) {
+		this.isReportGenerated = isReportGenerated;
+	}
+
+	/**
+	 * @return the totalFees
+	 */
+	public double getTotalFees() {
+		return totalFees;
+	}
+
+	/**
+	 * @param totalFees the totalFees to set
+	 */
+	public void setTotalFees(double totalFees) {
+		this.totalFees = totalFees;
+	}
+
+	/**
+	 * @return the hasPaidFee
+	 */
+	public boolean isHasPaidFee() {
+		return hasPaidFee;
+	}
+
+	/**
+	 * @param hasPaidFee the hasPaidFee to set
+	 */
+	public void setHasPaidFee(boolean hasPaidFee) {
+		this.hasPaidFee = hasPaidFee;
+	}
+
+	/**
+	 * @return the courseList
+	 */
+	public List<Course> getCourseList() {
+		return courseList;
+	}
+
+	/**
+	 * @param courseList the courseList to set
+	 */
+	public void setCourseList(List<Course> courseList) {
+		this.courseList = courseList;
+	}
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+    
 }

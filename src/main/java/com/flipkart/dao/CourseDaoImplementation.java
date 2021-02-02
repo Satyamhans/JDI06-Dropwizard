@@ -72,13 +72,15 @@ public class CourseDaoImplementation implements CourseDaoInterface
 	@Override
     public int getSeatCount(Course course)
     {
-		logger.debug("Fetching seat count for course : " + course.toString());
+		logger.debug("Fetching seat count for course : " + course.getCourseId());
 		PreparedStatement statement = null;
 		try {
 			statement = connection.prepareStatement(SQLQueriesConstants.GET_COURSE_SEATS);
 			statement.setString(1,course.getCourseId());
 			ResultSet resultSet = statement.executeQuery();
-			return resultSet.getInt(1);
+			while(resultSet.next()) {
+				return resultSet.getInt(1);
+			}
 		}
 		catch(SQLException se) {
 			logger.error(se.getMessage());

@@ -13,6 +13,8 @@ import com.flipkart.bean.Student;
 import com.flipkart.bean.User;
 import com.flipkart.dao.AdminDaoImplementation;
 import com.flipkart.dao.AdminDaoInterface;
+import com.flipkart.exception.CourseCRSException;
+import com.flipkart.exception.UserCRSException;
 
 public class AdminOperation implements AdminInterface
 {
@@ -37,7 +39,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful report card generation
 	 */
 	@Override
-	public boolean generateReport(Student student) 
+	public boolean generateReport(Student student) throws UserCRSException
 	{
 		return adminDao.generateReport(student);
 	}
@@ -48,7 +50,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful approval of accounts
 	 */
 	@Override
-	public boolean approveStudents(Student student)
+	public boolean approveStudents(Student student) throws UserCRSException
 	{	
 		return adminDao.approveStudents(student);
 	}
@@ -59,7 +61,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful add user
 	 */
 	@Override
-	public boolean addUser(User user)
+	public boolean addUser(User user)  throws UserCRSException
 	{
 		return adminDao.addUser(user);
 	}
@@ -70,7 +72,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful removal
 	 */
 	@Override
-	public boolean removeUser(User user) 
+	public boolean removeUser(User user) throws UserCRSException
 	{	
 		return adminDao.removeUser(user);
 	}
@@ -81,7 +83,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful update of course
 	 */
 	@Override
-	public boolean updateCourseInCatalogue(Course course) 
+	public boolean updateCourseInCatalogue(Course course) throws CourseCRSException
 	{
 		return adminDao.updateCourseInCatalogue(course);
 	}
@@ -92,7 +94,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful addition of course
 	 */
 	@Override
-	public boolean addCourseInCatalogue(Course course) 
+	public boolean addCourseInCatalogue(Course course) throws CourseCRSException
 	{
 		return adminDao.addCourseInCatalogue(course);
 	}
@@ -103,7 +105,7 @@ public class AdminOperation implements AdminInterface
 	 * @return boolean for successful/unsuccessful removal
 	 */
 	@Override
-	public boolean deleteCourseInCatalogue(Course course) 
+	public boolean deleteCourseInCatalogue(Course course) throws CourseCRSException
 	{
 		return adminDao.deleteCourseInCatalogue(course);
 	}

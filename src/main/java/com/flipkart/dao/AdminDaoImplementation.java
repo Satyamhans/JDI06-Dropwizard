@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import com.flipkart.constants.SQLQueriesConstants;
 
 import com.flipkart.constants.UserType;
+import com.flipkart.exception.CourseCRSException;
+import com.flipkart.exception.UserCRSException;
 
 public class AdminDaoImplementation implements AdminDaoInterface{
 
@@ -36,7 +38,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful approval of accounts
 	 */
 	@Override
-	public boolean approveStudents(Student student){
+	public boolean approveStudents(Student student) throws UserCRSException {
 		logger.debug("Admin is approving the student with ID: " + student.getUserId() );
 		PreparedStatement stmt = null;
 		try{
@@ -46,7 +48,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 			int row = stmt.executeUpdate();
 			if(row==0) {
 				logger.info("Student with ID : " + student.getUserId() + " does not exists.");
-				return false;
+				throw new UserCRSException("Student with ID : " + student.getUserId() + " does not exists.", student.getUserId());
 			}
 			else
 				return true;
@@ -74,7 +76,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 			while(rs.next()){
 				Student student = new Student();
 				student.setUserId(rs.getInt(1));
-				student.setUserName(rs.getString(2));
+				student.setUsername(rs.getString(2));
 				studentList.add(student);
 			}
 		}
@@ -90,7 +92,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful report card generation
 	 */
 	@Override
-	public boolean generateReport(Student student) {
+	public boolean generateReport(Student student) throws UserCRSException{
 		logger.debug("Admin is generating the report card for the student with ID: " + student.getUserId());
 		PreparedStatement stmt = null;
 		try{
@@ -100,7 +102,13 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 				stmt = conn.prepareStatement(SQLQueriesConstants.UPDATE_REPORT_STATUS);
 				stmt.setInt(1, student.getUserId());
 				int row = stmt.executeUpdate();
-				return row != 0 ? true : false;
+				if(row!=0)return true;
+				else {
+					throw new UserCRSException("Student not found!", student.getUserId());
+				}
+			}
+			else {
+				throw new UserCRSException("Student hasn't paid the fee yet!", student.getUserId());
 			}
 		}
 		catch (SQLException ex){
@@ -117,18 +125,18 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful addition of course
 	 */
 	@Override
-	public boolean addCourseInCatalogue(Course course) {
+	public boolean addCourseInCatalogue(Course course) throws CourseCRSException{
 		logger.debug("Admin is adding a new course to catalogue with courseID: " + course.getCourseId());
 		PreparedStatement stmt = null;
 		try {
 			conn = DBUtils.getConnection();
 			boolean courseExists = AdminValidationDao.checkCourse(course.getCourseId());
 			if (courseExists)
-				return false;
+				throw new CourseCRSException("Course already exists!", course.getCourseId());
 			stmt = conn.prepareStatement(SQLQueriesConstants.ADD_COURSE);
 			stmt.setString(1, course.getCourseId());
 			stmt.setString(2, course.getCourseName());
-			stmt.setString(3, course.getCourseProfessor());
+			stmt.setString(3, course.getCourseProf());
 			stmt.setDouble(4, course.getCourseFee());
 			stmt.setString(5, course.getCatalogueId());
 			stmt.setString(6, course.getCourseDescription());
@@ -138,7 +146,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 				return true;
 			else {
 				logger.info("Error with the input course values");
-				return false;
+				throw new CourseCRSException("Error with the input course values!", course.getCourseId());
 			}
 		}
 		catch(SQLException ex){
@@ -153,13 +161,13 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful removal
 	 */
 	@Override
-	public boolean deleteCourseInCatalogue(Course course) {
+	public boolean deleteCourseInCatalogue(Course course) throws CourseCRSException {
 		logger.debug("Admin is deleting a course from catalogue with courseID: " + course.getCourseId());
 		PreparedStatement stmt = null;
 		try {
 			boolean courseExists = AdminValidationDao.checkCourse(course.getCourseId());
 			if (!courseExists) {
-				return false;
+				throw new CourseCRSException("Course Doesn't exists!", course.getCourseId());
 			}
 			conn = DBUtils.getConnection();
 			stmt = conn.prepareStatement(SQLQueriesConstants.DELETE_COURSE);
@@ -169,7 +177,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 				return true;
 			else {
 				logger.info("Error while deleting the course");
-				return false;
+				throw new CourseCRSException("Error while deleting the course", course.getCourseId());
 			}
 		}
 		catch(SQLException ex){
@@ -186,18 +194,18 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful update of course
 	 */
 	@Override
-	public boolean updateCourseInCatalogue(Course course) {
+	public boolean updateCourseInCatalogue(Course course) throws CourseCRSException{
 		logger.debug("Admin is updating course with ID: " + course.getCourseId());
 		PreparedStatement stmt = null;
 		try {
 			boolean courseExists = AdminValidationDao.checkCourse(course.getCourseId());
 			if (!courseExists)
-				return false;
+				throw new CourseCRSException("Course Doesn't exists!", course.getCourseId());
 			conn = DBUtils.getConnection();
 			stmt = conn.prepareStatement(SQLQueriesConstants.UPDATE_COURSE);
 			stmt.setString(1, course.getCourseName());
 			stmt.setDouble(2, course.getCourseFee());
-			stmt.setString(3, course.getCourseProfessor());
+			stmt.setString(3, course.getCourseProf());
 			stmt.setString(4, course.getCourseDescription());
 			stmt.setString(5, course.getCatalogueId());
 			stmt.setInt(6, course.getProfessorId());
@@ -207,7 +215,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 				return true;
 			else {
 				logger.info("Error with the input course values");
-				return false;
+				throw new CourseCRSException("Error with the input course values!", course.getCourseId());
 			}
 		}
 		catch(SQLException ex){
@@ -222,9 +230,9 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @param user that is being created
 	 * @return boolean for successful/unsuccessful add user
 	 */
-	public boolean addUser(User user){
+	public boolean addUser(User user) throws UserCRSException{
 		if(AdminValidationDao.checkUser(user)){
-			return false;
+			throw new UserCRSException("User already exists!", user.getUserId());
 		}
 		else {
 			if (UserType.ADMIN.equals(user.getUserType())) {
@@ -420,14 +428,14 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 	 * @return boolean for successful/unsuccessful removal
 	 */
 	@Override
-	public boolean removeUser(User user)
+	public boolean removeUser(User user) throws UserCRSException
 	{
 		logger.debug("Admin is removing user with email ID: " + user.getEmailId());
 		PreparedStatement stmt = null;
 		try {
 			boolean userExists = AdminValidationDao.checkUser(user);
 			if (!userExists) {
-				return false;
+				throw new UserCRSException("User doesn't exist!", user.getUserId());
 			}
 			checkIfProfessor(user);
 			conn = DBUtils.getConnection();
@@ -438,7 +446,7 @@ public class AdminDaoImplementation implements AdminDaoInterface{
 				return true;
 			else {
 				logger.info("Error while removing the user");
-				return false;
+				throw new UserCRSException("Error while removing the user", user.getUserId());
 			}
 		}
 		catch(SQLException ex){

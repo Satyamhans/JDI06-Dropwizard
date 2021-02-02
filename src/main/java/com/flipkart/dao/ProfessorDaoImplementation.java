@@ -53,7 +53,7 @@ public class ProfessorDaoImplementation implements ProfessorDaoInterface{
             {
                 Student student=new Student();
                 student.setUserId(rs.getInt("studentId"));
-                student.setUserName(rs.getString("username"));
+                student.setUsername(rs.getString("username"));
                 enrolledStudents.add(student);
             }
         }catch(SQLException se){

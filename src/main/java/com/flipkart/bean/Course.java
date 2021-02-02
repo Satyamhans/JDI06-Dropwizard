@@ -6,9 +6,10 @@ import java.util.Objects;
 /**
  * @author pooja
  */
+
 public class Course {
-    private String courseId;
-    private String courseName;
+
+	private String courseName;
     private String courseProfessor;
     private double courseFee;
     private String catalogueId;
@@ -28,11 +29,21 @@ public class Course {
         return Objects.equals(courseId, course.courseId);
     }
 
+    
     @Override
     public int hashCode() {
         return Objects.hash(courseId);
     }
 
+    /**
+     * @param courseId
+     * @param courseName
+     * @param courseProfessor
+     * @param courseFee
+     * @param catalogueId
+     * @param courseDescription
+     * @param professorId
+     */
     public Course(String courseId, String courseName, String courseProfessor, double courseFee, String catalogueId, String courseDescription, int professorId) {
         this.courseId = courseId;
         this.courseName = courseName;
@@ -43,68 +54,107 @@ public class Course {
         this.professorId = professorId;
     }
 
-    public void setCourseProfessor(String courseProfessor) {
-        this.courseProfessor = courseProfessor;
-    }
+    private String courseId;
+    /**
+	 * @return the courseId
+	 */
+	public String getCourseId() {
+		return courseId;
+	}
 
-    public double getCourseFee() {
-        return courseFee;
-    }
+	/**
+	 * @param courseId the courseId to set
+	 */
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
 
-    public void setCourseFee(double courseFee) {
-        this.courseFee = courseFee;
-    }
+	/**
+	 * @return the courseName
+	 */
+	public String getCourseName() {
+		return courseName;
+	}
 
-    public String getCourseId() {
-        return courseId;
-    }
+	/**
+	 * @param courseName the courseName to set
+	 */
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
 
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
-    }
+	/**
+	 * @return the courseProfessor
+	 */
+	public String getCourseProf() {
+		return courseProfessor;
+	}
 
-    public String getCourseName() {
-        return courseName;
-    }
+	/**
+	 * @param courseProfessor the courseProfessor to set
+	 */
+	public void setCourseProf(String courseProfessor) {
+		this.courseProfessor = courseProfessor;
+	}
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
+	/**
+	 * @return the courseFee
+	 */
+	public double getCourseFee() {
+		return courseFee;
+	}
 
-    public String getCourseProfessor() {
-        return courseProfessor;
-    }
+	/**
+	 * @param courseFee the courseFee to set
+	 */
+	public void setCourseFee(double courseFee) {
+		this.courseFee = courseFee;
+	}
 
-    public void setCourseProf(String courseProfessor) {
-        this.courseProfessor = courseProfessor;
-    }
-    
-    public String getCatalogueId() {
+	/**
+	 * @return the catalogueId
+	 */
+	public String getCatalogueId() {
 		return catalogueId;
 	}
 
+	/**
+	 * @param catalogueId the catalogueId to set
+	 */
 	public void setCatalogueId(String catalogueId) {
 		this.catalogueId = catalogueId;
 	}
 
+	/**
+	 * @return the courseDescription
+	 */
 	public String getCourseDescription() {
 		return courseDescription;
 	}
 
+	/**
+	 * @param courseDescription the courseDescription to set
+	 */
 	public void setCourseDescription(String courseDescription) {
 		this.courseDescription = courseDescription;
 	}
-	
+
+	/**
+	 * @return the professorId
+	 */
 	public int getProfessorId() {
 		return professorId;
 	}
 
+	/**
+	 * @param professorId the professorId to set
+	 */
 	public void setProfessorId(int professorId) {
 		this.professorId = professorId;
 	}
-	
+
     public String toString() {
-    	return courseId+"\t"+courseName+"\t"+professorId+"\t"+courseProfessor+"\t"+courseFee+"\t"+catalogueId+"\t"+courseDescription;
+    	return courseId+", "+courseName;
     }
     
     

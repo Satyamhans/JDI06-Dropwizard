@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import com.flipkart.bean.*;
 import com.flipkart.constants.UserType;
+import com.flipkart.exception.CourseCRSException;
+import com.flipkart.exception.UserCRSException;
 import com.flipkart.service.AdminInterface;
 import com.flipkart.service.AdminOperation;
 import com.flipkart.validation.*;
@@ -65,15 +67,20 @@ public class AdminRESTAPI {
 	public Response approveStudent(@PathParam("studentId") int studentId) {
 		Student student = new Student();
 		student.setUserId(studentId);
-		boolean status = adminInterfaceReference.approveStudents(student);
-		String msg = "";
-		if(status) {
-			msg = "Student with ID: "+ studentId + "  approved.";
-			return Response.status(200).entity(msg).build();
+		try {
+			boolean status = adminInterfaceReference.approveStudents(student);
+			String msg = "";
+			if(status) {
+				msg = "Student with ID: "+ studentId + "  approved.";
+				return Response.status(200).entity(msg).build();
+			}
+			else {
+				msg = "Unable to Approve Student with ID: "+ studentId;
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			msg = "Unable to Approve Student with ID: "+ studentId;
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 	
@@ -116,15 +123,20 @@ public class AdminRESTAPI {
 	public Response generateReport(@PathParam("studentId") int studentId) {
 		Student student = new Student();
 		student.setUserId(studentId);
-		boolean status = adminInterfaceReference.generateReport(student);
-		String msg;
-		if(status) {
-			msg = "Report generated Successfully!";
-			return Response.status(200).entity(msg).build();
+		try {
+			boolean status = adminInterfaceReference.generateReport(student);
+			String msg;
+			if(status) {
+				msg = "Report generated Successfully!";
+				return Response.status(200).entity(msg).build();
+			}
+			else {
+				msg = "Unable to generate report for student : "+ studentId;
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			msg = "Unable to generate report for student : "+ studentId;
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -151,13 +163,18 @@ public class AdminRESTAPI {
 	@Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
 	public Response addCourseInCatalogue(Course course) {
-		boolean status = adminInterfaceReference.addCourseInCatalogue(course);
-		if(status) {
-			return Response.status(200).entity(course).build();
+		try {
+			boolean status = adminInterfaceReference.addCourseInCatalogue(course);
+			if(status) {
+				return Response.status(200).entity(course).build();
+			}
+			else {
+				String msg = "Unable to add course to the Database, please try again.";
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			String msg = "Unable to add course to the Database, please try again.";
-			return Response.status(500).entity(msg).build();
+		catch(CourseCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -173,15 +190,20 @@ public class AdminRESTAPI {
 	public Response deleteCourseInCatalogue(@PathParam("courseId") String courseId) {
 		Course course = new Course();
 		course.setCourseId(courseId);
-		boolean status = adminInterfaceReference.deleteCourseInCatalogue(course);
-		String msg;
-		if(status) {
-			msg = "Course with course ID: "+ courseId+ " deleted successfully";
-			return Response.status(200).entity(msg).build();
+		try {
+			boolean status = adminInterfaceReference.deleteCourseInCatalogue(course);
+			String msg;
+			if(status) {
+				msg = "Course with course ID: "+ courseId+ " deleted successfully";
+				return Response.status(200).entity(msg).build();
+			}
+			else {
+				msg = "Unable to delete the course with ID: "+ courseId;
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			msg = "Unable to delete the course with ID: "+ courseId;
-			return Response.status(500).entity(msg).build();
+		catch(CourseCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -194,13 +216,18 @@ public class AdminRESTAPI {
 	@Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
 	public Response updateCourseInCatalogue(Course course) {
-		boolean status = adminInterfaceReference.updateCourseInCatalogue(course);
-		if(status) {
-			return Response.status(200).entity(course).build();
+		try {
+			boolean status = adminInterfaceReference.updateCourseInCatalogue(course);
+			if(status) {
+				return Response.status(200).entity(course).build();
+			}
+			else {
+				String msg = "Unable to update course in the Database, please try again.";
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			String msg = "Unable to update course in the Database, please try again.";
-			return Response.status(500).entity(msg).build();
+		catch(CourseCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -214,14 +241,19 @@ public class AdminRESTAPI {
 	public Response addAdmin(Admin admin)
 	{
 		admin.setUserType(UserType.ADMIN);
-		boolean status = adminInterfaceReference.addUser(admin);
-		if(status) {
-			return Response.status(200).entity(admin).build();
+		try {
+			boolean status = adminInterfaceReference.addUser(admin);
+			if(status) {
+				return Response.status(200).entity(admin).build();
+			}
+			else
+			{
+				String msg = "Unable to add admin in the Database, please try again.";
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else
-		{
-			String msg = "Unable to add admin in the Database, please try again.";
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -236,14 +268,19 @@ public class AdminRESTAPI {
     @Produces(MediaType.APPLICATION_JSON)
 	public Response addProfessor(Professor professor){
 		professor.setUserType(UserType.PROFESSOR);
-		boolean status = adminInterfaceReference.addUser(professor);
-		if(status) {
-			return Response.status(200).entity(professor).build();
+		try {
+			boolean status = adminInterfaceReference.addUser(professor);
+			if(status) {
+				return Response.status(200).entity(professor).build();
+			}
+			else
+			{
+				String msg = "Unable to add professor in the Database, please try again.";
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else
-		{
-			String msg = "Unable to add professor in the Database, please try again.";
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -258,14 +295,19 @@ public class AdminRESTAPI {
     @Produces(MediaType.APPLICATION_JSON)
 	public Response addStudent(@Valid Student student) throws ValidationException{
 		student.setUserType(UserType.STUDENT);
-		boolean status = adminInterfaceReference.addUser(student);
-		if(status) {
-			return Response.status(200).entity(student).build();
+		try {
+			boolean status = adminInterfaceReference.addUser(student);
+			if(status) {
+				return Response.status(200).entity(student).build();
+			}
+			else
+			{
+				String msg = "Unable to add student in the Database, please try again.";
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else
-		{
-			String msg = "Unable to add student in the Database, please try again.";
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 
@@ -278,15 +320,20 @@ public class AdminRESTAPI {
 	public Response removeUser(@PathParam("userEmail") String userEmail) {
 		User user = new User();
 		user.setEmailId(userEmail);
-		boolean status = adminInterfaceReference.removeUser(user);
-		String msg = "";
-		if(status) {
-			msg = "User with email : "+ userEmail + " deleted successfully";
-			return Response.status(200).entity(msg).build();
+		try {
+			boolean status = adminInterfaceReference.removeUser(user);
+			String msg = "";
+			if(status) {
+				msg = "User with email : "+ userEmail + " deleted successfully";
+				return Response.status(200).entity(msg).build();
+			}
+			else {
+				msg = "Unable to delete the user with email: "+ userEmail;
+				return Response.status(500).entity(msg).build();
+			}
 		}
-		else {
-			msg = "Unable to delete the user with email: "+ userEmail;
-			return Response.status(500).entity(msg).build();
+		catch(UserCRSException e) {
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 	}
 

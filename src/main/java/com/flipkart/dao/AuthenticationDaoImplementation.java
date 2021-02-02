@@ -61,7 +61,7 @@ public class AuthenticationDaoImplementation{
 
             while (rs.next()) {
                 user.setUserId(rs.getInt("userId"));
-                user.setUserName(rs.getString("username"));
+                user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 String userTypeDB = rs.getString("usertype");
 
@@ -128,7 +128,7 @@ public class AuthenticationDaoImplementation{
 
             while (rs.next()) {
                 student.setUserId(rs.getInt("studentId"));
-                student.setUserName(rs.getString("username"));
+                student.setUsername(rs.getString("username"));
                 student.setPassword(rs.getString("password"));
                 String userTypeDB = rs.getString("usertype");
 
@@ -238,7 +238,7 @@ public class AuthenticationDaoImplementation{
                 while (rss.next()) {
                     course.setCourseId(rss.getString("courseId"));
                     course.setCourseName(rss.getString("courseName"));
-                    course.setCourseProfessor(rss.getString("courseProfessor"));
+                    course.setCourseProf(rss.getString("courseProfessor"));
                     course.setCourseFee(Double.parseDouble(rss.getString("courseFee")));
                     course.setProfessorId(rss.getInt("professorId"));
                     course.setCourseDescription(rss.getString("courseDescription"));
@@ -288,7 +288,7 @@ public class AuthenticationDaoImplementation{
             while(rs.next())
             {
                 professor.setUserId(rs.getInt("professorId"));
-                professor.setUserName(rs.getString("username"));
+                professor.setUsername(rs.getString("username"));
                 professor.setPassword(rs.getString("password"));
                 String userTypeDB = rs.getString("usertype");
 
@@ -357,7 +357,7 @@ public class AuthenticationDaoImplementation{
 
                 course.setCourseId(rs.getString("courseId"));
                 course.setCourseName(rs.getString("courseName"));
-                course.setCourseProfessor(rs.getString("courseProfessor"));
+                course.setCourseProf(rs.getString("courseProfessor"));
                 course.setCourseFee(Double.parseDouble(rs.getString("courseFee")));
                 course.setProfessorId(rs.getInt("professorId"));
                 course.setCourseDescription(rs.getString("courseDescription"));
@@ -405,7 +405,7 @@ public class AuthenticationDaoImplementation{
 
             while(rs.next()) {
                 admin.setUserId(rs.getInt("adminId"));
-                admin.setUserName(rs.getString("username"));
+                admin.setUsername(rs.getString("username"));
                 admin.setPassword(rs.getString("password"));
                 String userTypeDB = rs.getString("usertype");
 

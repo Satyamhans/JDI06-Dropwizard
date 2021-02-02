@@ -19,7 +19,7 @@ public class User {
 	@Size(min = 3, max = 10, message = "The length of username should be between 3 to 10")
     String username;
 	
-    int userId;
+	int userId;
     
     @NotNull
     @Pattern(message = "Invalid Email Address->" + "Valid emails:user@gmail.com or my.user@domain.com etc.",regexp = "^[a-zA-Z0-9_!#$%&�*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
@@ -36,6 +36,13 @@ public class User {
     	
     }
     
+    /**
+     * @param username
+     * @param userId
+     * @param emailId
+     * @param password
+     * @param userType
+     */
     public User(String username, int userId, String emailId, String password, UserType userType) {
         this.username = username;
         this.userId = userId;
@@ -44,43 +51,75 @@ public class User {
         this.userType = userType;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    /**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUserName(String username) {
-        this.username = username;
-    }
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public String getEmailId() {
-        return emailId;
-    }
+	/**
+	 * @return the emailId
+	 */
+	public String getEmailId() {
+		return emailId;
+	}
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
+	/**
+	 * @param emailId the emailId to set
+	 */
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public UserType getUserType() {
-        return userType;
-    }
+	/**
+	 * @return the userType
+	 */
+	public UserType getUserType() {
+		return userType;
+	}
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
+	/**
+	 * @param userType the userType to set
+	 */
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+  
 }
