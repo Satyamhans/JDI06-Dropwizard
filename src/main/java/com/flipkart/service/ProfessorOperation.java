@@ -11,6 +11,7 @@ import com.flipkart.constants.Grades;
 import com.flipkart.dao.ProfessorDaoImplementation;
 import com.flipkart.dao.ProfessorDaoInterface;
 import com.flipkart.exception.*;
+import com.flipkart.validation.AdminValidationDao;
 
 public class ProfessorOperation implements ProfessorInterface
 {
@@ -40,8 +41,12 @@ public class ProfessorOperation implements ProfessorInterface
 	@Override
 	public ArrayList<Student> viewEnrolledStudents(Professor professor,Course course)  throws UserCRSException
 	{	
+		if(!AdminValidationDao.checkUserType(professor).equals("P")) {
+			throw new UserCRSException("No Professor Found with Professor Id: " + professor.getUserId() , professor.getUserId());
+		}
+		
 		boolean courseCheck = false;
-		for(Course professorCourse: professor.getCourseList())
+		for(Course professorCourse: professorDao.viewCourses(professor))
 		{
 			if(professorCourse.getCourseId().equals(course.getCourseId()))
 			{
@@ -70,8 +75,11 @@ public class ProfessorOperation implements ProfessorInterface
 	@Override
 	public boolean gradeStudents(Professor professor,Student student,Course course,Grades grade) throws UserCRSException
 	{
+		if(!AdminValidationDao.checkUserType(professor).equals("P")) {
+			throw new UserCRSException("No Professor Found with Professor Id: " + professor.getUserId() , professor.getUserId());
+		}
 		boolean courseCheck = false;
-		for(Course professorCourse: professor.getCourseList())
+		for(Course professorCourse: professorDao.viewCourses(professor))
 		{
 			if(professorCourse.getCourseId().equals(course.getCourseId()))
 			{
@@ -79,8 +87,13 @@ public class ProfessorOperation implements ProfessorInterface
 			}
 		}
 		
-		if(courseCheck == false)
+		if(courseCheck == false) {
 			throw new UserCRSException("Course: " + course.getCourseId() + " is not in your Course List, Not allowed!", professor.getUserId());
+		}
+		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student Found with Student Id: " + student.getUserId() , student.getUserId());
+		}
 		
 		if(grade == Grades.N)
 			throw new UserCRSException("Invalid Grade!", professor.getUserId());
@@ -97,10 +110,14 @@ public class ProfessorOperation implements ProfessorInterface
 	 * @return  List of courses
 	 */
 	@Override
-	public ArrayList<Course> viewCourses(Professor professor)
+	public ArrayList<Course> viewCourses(Professor professor) throws UserCRSException
 	{
 		// Method to view the courses a professor is undertaking
 		logger.info("Professor is viewing courses");
+		
+		if(!AdminValidationDao.checkUserType(professor).equals("P")) {
+			throw new UserCRSException("No Professor Found with Professor Id: " + professor.getUserId() , professor.getUserId());
+		}
 		
 		ArrayList<Course> courses = professorDao.viewCourses(professor);
 		

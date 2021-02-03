@@ -31,5 +31,5 @@ public interface ProfessorInterface extends UserInterface
 	 * @param professor for which the list needs to be displayed
 	 * @return  List of courses
 	 */
-	public ArrayList<Course> viewCourses(Professor professor);						
+	public ArrayList<Course> viewCourses(Professor professor) throws UserCRSException;						
 }

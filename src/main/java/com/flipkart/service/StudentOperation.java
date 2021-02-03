@@ -51,6 +51,10 @@ public class StudentOperation implements StudentInterface {
 	public synchronized List<Course> registerCourses(Student student, List<Course> courseList) throws UserCRSException{
 		logger.info("Student is registering for courses");
 		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
+		
 		if(StudentValidationDao.isRegistered(student))throw new UserCRSException("You are already Registered, No modification allowed now!", student.getUserId());
 		if(student.getCourseList().size() != 6)throw new UserCRSException("Not enough course selected, 6 Courses are required!", student.getUserId());
 		
@@ -86,6 +90,10 @@ public class StudentOperation implements StudentInterface {
 	public Map<Course, Grades> viewGrades(Student student) throws UserCRSException{
 		logger.info("Student is viewing grades");
 		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
+		
 		if(!StudentValidationDao.isRegistered(student))throw new UserCRSException("Student is Not Registered yet!", student.getUserId());
 		if(!StudentValidationDao.isReportGenerated(student))throw new UserCRSException("Report Card has not been generated yet!", student.getUserId());
 		
@@ -104,6 +112,9 @@ public class StudentOperation implements StudentInterface {
 	public boolean makeFeePayment(Student student) throws UserCRSException{
 		// TODO Auto-generated method stub
 		logger.info("Student is paying fees");
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
 		
 		if(!StudentValidationDao.isRegistered(student))throw new UserCRSException("Student is Not Registered yet!", student.getUserId());
 		if(StudentValidationDao.isHasPaidFee(student)) throw new UserCRSException("You have already paid the fees!", student.getUserId());
@@ -131,6 +142,10 @@ public class StudentOperation implements StudentInterface {
 	public boolean addCourses(Course course, Student student) throws UserCRSException {
 		logger.info("Student is adding courses");
 		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
+		
 		if(StudentValidationDao.isRegistered(student))throw new UserCRSException("You are already Registered, No modification allowed now!", student.getUserId());
 		if(student.getCourseList().size() == 6)throw new UserCRSException("You are already up with your Course List, Can't add more than 6 courses!!", student.getUserId());
 		if(!courseDao.checkCourse(course))throw new UserCRSException("No Course exists for the Course Id: "+ course.getCourseId() + " !" , student.getUserId());
@@ -147,6 +162,10 @@ public class StudentOperation implements StudentInterface {
 	
 	public List<Course> getCourseList(Student student) throws UserCRSException{
 		logger.info("Student is dropping courses");
+		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
 		
 		if(!StudentValidationDao.isRegistered(student)) {
 			return student.getCourseList();
@@ -165,6 +184,10 @@ public class StudentOperation implements StudentInterface {
 	public boolean dropCourses(Course course, Student student) throws UserCRSException{
 		logger.info("Student is dropping courses");
 		
+		if(!AdminValidationDao.checkUserType(student).equals("S")) {
+			throw new UserCRSException("No Student found with Student Id: "+ student.getUserId(), student.getUserId());
+		}
+		
 		if(StudentValidationDao.isRegistered(student))throw new UserCRSException("You are already Registered, No modification allowed now!", student.getUserId());
 		if(!this.hasThisCourse(student, course))throw new UserCRSException("Course with course Id: "+ course.getCourseId() + " has not been Selected yet, Not allowed!", student.getUserId());
 		
@@ -178,6 +201,7 @@ public class StudentOperation implements StudentInterface {
 	 */
 
 	private boolean hasThisCourse(Student student, Course course){
+		
 		List<Course> courseList = student.getCourseList();
 		for(Course crs : courseList){
 			if(crs.getCourseId().equals(course.getCourseId())){

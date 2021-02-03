@@ -4,6 +4,7 @@ import com.flipkart.bean.Course;
 import com.flipkart.bean.User;
 import com.flipkart.constants.SQLQueriesConstants;
 import com.flipkart.dao.AdminDaoImplementation;
+import com.flipkart.exception.UserCRSException;
 import com.flipkart.util.DBUtils;
 import org.apache.log4j.Logger;
 
@@ -106,6 +107,27 @@ public class AdminValidationDao {
         return false;
     }
 
-
+    public static String checkUserType(User user) throws UserCRSException{
+        logger.debug("Checking whether the user exists and returns UserType");
+        PreparedStatement stmt = null;
+        try{
+            conn = DBUtils.getConnection();
+            stmt = conn.prepareStatement(SQLQueriesConstants.CHECK_USER_TYPE);
+            stmt.setInt(1, user.getUserId());
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next() == false) {
+                logger.debug("No user with User ID: "+ user.getUserId()+ " exists.");
+                throw new UserCRSException("No user with User ID: "+ user.getUserId()+ " exists.", user.getUserId());
+            }
+            else {
+                logger.debug("User with User ID: "+ user.getUserId()+ " exists.");
+                return rs.getString(1);
+            }
+        }
+        catch(SQLException ex){
+            logger.error(ex.getMessage());
+        }
+        return "";
+    }
 
 }

@@ -148,8 +148,9 @@ public class AdminRESTAPI {
 	@GET
 	@Path("/viewCourseCatalogue")
     @Produces(MediaType.APPLICATION_JSON)
-	public List<Course> viewCourseCatalogue() {
-		return adminInterfaceReference.viewCourseCatalogue();
+	public Response viewCourseCatalogue() {
+		
+		return Response.status(200).entity(adminInterfaceReference.viewCourseCatalogue()).build();
 	}
 
 

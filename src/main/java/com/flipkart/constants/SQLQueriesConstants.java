@@ -25,7 +25,7 @@ public class SQLQueriesConstants {
     public static final String CHECK_PROFESSOR = "SELECT usertype, userId FROM usertable WHERE email = ?";
     public static final String SET_PROF_NULL = "UPDATE coursetable set courseProfessor = NULL, professorId = NULL WHERE courseId = ?";
     public static final String GET_PROFESSOR_COURSES = "SELECT * from coursetable where professorId = ?";
-
+    public static final String CHECK_USER_TYPE  = "select usertype from usertable where userId = ? ";
 
     //PaymentServices
     public static final String SET_STUDENT_FEE = "update studenttable set totalFees = ? where studentId = ?";

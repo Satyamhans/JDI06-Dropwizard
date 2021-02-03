@@ -99,7 +99,7 @@ public class ProfessorDaoImplementation implements ProfessorDaoInterface{
     }
 
     /**
-     * To vie courses taken up by Professor in the semester
+     * To view courses taken up by Professor in the semester
      * @param professor for which the list needs to be displayed
      * @return  List of courses
      */

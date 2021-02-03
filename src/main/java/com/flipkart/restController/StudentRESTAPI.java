@@ -139,11 +139,11 @@ public class StudentRESTAPI
 	@GET
 	@Path("/viewCourseCatalogue")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> viewCourseCatalogue() 
+	public Response viewCourseCatalogue() 
 	{
 		List<Course> courseCatalogue = studentOperation.viewCourseCatalogue();
 		
-		return courseCatalogue;
+		return Response.status(200).entity(courseCatalogue).build();
 	}
 	
 	
@@ -157,18 +157,18 @@ public class StudentRESTAPI
 	@Path("/viewRegisteredCourses")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> viewRegisteredCourses(Student student) 
+	public Response viewRegisteredCourses(Student student) 
 	{
-		// fetch from database instead ..?
 		List<Course> courseList = null;
 		try{
 			courseList = studentOperation.getCourseList(student);
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 		
-		return courseList;
+		return Response.status(200).entity(courseList).build();
 	}
 	
 	
@@ -182,9 +182,10 @@ public class StudentRESTAPI
 	@Path("/viewSemesterFees")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public double viewSemesterFees(Student student)
+	public Response viewSemesterFees(Student student)
 	{
-		return PaymentService.getTotalFees(student);
+		double totalFees = PaymentService.getTotalFees(student);
+		return Response.status(200).entity(totalFees).build();
 	}
 	
 	
@@ -198,7 +199,7 @@ public class StudentRESTAPI
 	@Path("/makeFeePayment")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean makeFeePayment(Student student)
+	public Response makeFeePayment(Student student)
 	{
 		boolean response = false;
 		try{
@@ -206,8 +207,9 @@ public class StudentRESTAPI
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
 		}
-		return response;
+		return Response.status(200).entity(response).build();
 	}
 	
 	
@@ -221,7 +223,7 @@ public class StudentRESTAPI
 	@Path("/registerCourses")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> registerCourses(Student student)
+	public Response registerCourses(Student student)
 	{
 		List<Course> courseList = null;
 		
@@ -230,8 +232,9 @@ public class StudentRESTAPI
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
 		}
-		System.out.println(student.getCourseList().size());
-		return courseList;
+		
+		return Response.status(200).entity(courseList).build();
 	}
 }

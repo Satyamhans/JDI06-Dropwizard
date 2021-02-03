@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
@@ -42,11 +43,17 @@ public class ProfessorRESTAPI {
 	@Path("/viewCourses")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> viewCourses(Professor professor)
+	public Response viewCourses(Professor professor)
 	{
 		List<Course>courseList = null;
-		courseList = professorOperation.viewCourses(professor);
-		return courseList;
+		try {
+			courseList = professorOperation.viewCourses(professor);
+		}
+		catch(UserCRSException e) {
+			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
+		}
+		return Response.status(200).entity(courseList).build();
 	}
 	
 	/**
@@ -59,7 +66,7 @@ public class ProfessorRESTAPI {
 	@Path("/viewEnrolledStudents/{courseId}")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Student> viewEnrolledStudents(Professor professor, @PathParam("courseId") String courseId)		// professor, course
+	public Response viewEnrolledStudents(Professor professor, @PathParam("courseId") String courseId)		// professor, course
 	{
 		Course course = new Course();
 		course.setCourseId(courseId);
@@ -70,9 +77,10 @@ public class ProfessorRESTAPI {
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
 		}
 		
-		return studentList;
+		return Response.status(200).entity(studentList).build();
 	}
 	
 	/**
@@ -87,7 +95,7 @@ public class ProfessorRESTAPI {
 	@Path("/gradeStudents/{studentId}/{courseId}/{grade}")
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean gradeStudents(Professor professor, @PathParam("studentId") String studentId, @PathParam("courseId") String courseId, @PathParam("grade") char grade_to_assign) 	// professor, student, course, grade
+	public Response gradeStudents(Professor professor, @PathParam("studentId") String studentId, @PathParam("courseId") String courseId, @PathParam("grade") char grade_to_assign) 	// professor, student, course, grade
 	{
 		Student student = new Student();
 		int id = Integer.parseInt(studentId);
@@ -106,16 +114,19 @@ public class ProfessorRESTAPI {
 		else {
 			grade = Grades.N;
 		}
-		
+		logger.info(professor.getUserId() + " " + studentId+" " + courseId+" " + grade_to_assign);
 		boolean response = false;
 		try{
 			response = professorOperation.gradeStudents(professor, student, course, grade);
+			if(response) {
+				return Response.status(200).entity("Student graded Successfully!").build();
+			}
 		}
 		catch(UserCRSException e) {
 			logger.info(e.getMsg());
+			return Response.status(404).entity(e.getMsg()).build();
 		}
-		
-		return response;
+		return Response.status(200).entity("Unable to grade Student!").build();
 	}
 	
 	/**
@@ -125,10 +136,10 @@ public class ProfessorRESTAPI {
 	@GET
 	@Path("/viewCourseCatalogue")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Course> printCourseCatalogue() 
+	public Response printCourseCatalogue() 
 	{
 		List<Course> courseCatalogue = professorOperation.viewCourseCatalogue();
 		
-		return courseCatalogue;
+		return Response.status(200).entity(courseCatalogue).build();
 	}
 }
